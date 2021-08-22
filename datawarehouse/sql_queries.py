@@ -130,7 +130,8 @@ DISTKEY ( start_time )
 SORTKEY (start_time);
 """)
 
-s3=config.get('S3','LOG_DATA')
+s3_log=config.get('S3','LOG_DATA')
+s3_song=config.get('S3','SONG_DATA')
 role=config.get('IAM_ROLE','REDSHIFT_ARN')
 jsonpath = config.get('S3','LOG_JSONPATH')
 
@@ -139,14 +140,14 @@ COPY staging_events
 FROM '{}'
 iam_role '{}'
 FORMAT AS json '{}';
-""").format(s3,role,jsonpath)
+""").format(s3_log,role,jsonpath)
 
 staging_songs_copy = ("""
 COPY staging_songs
 FROM '{}'
 iam_role '{}'
 FORMAT AS json 'auto';
-""").format(s3,role)
+""").format(s3_song,role)
 
 
 # load tables

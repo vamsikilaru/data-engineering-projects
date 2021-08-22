@@ -243,6 +243,6 @@ if __name__=="__main__":
     #clean up
     if(args.delete):
         delete_cluster(redshift)
-        time.sleep(60)
+        time.sleep(120)
         delete_ec2_security_group(ec2)
         delete_IAM_role(iam)
