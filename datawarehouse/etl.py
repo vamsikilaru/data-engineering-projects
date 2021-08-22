@@ -2,7 +2,7 @@ from  sql_queries import copy_table_queries,insert_table_queries
 import dabaseconnection
 
 def load_staging_tables(cur, conn):
-    for query in load_staging_tables:
+    for query in copy_table_queries:
         cur.execute(query)
         conn.commit()
 

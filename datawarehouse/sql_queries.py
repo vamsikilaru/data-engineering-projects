@@ -1,8 +1,14 @@
 import configparser
+from logging import Logger
 from pathlib import Path
+import logging
+import logging.config
+
+logging.config.fileConfig(f"{Path(__file__).parents[0]}/logging.ini")
+logger = logging.getLogger(__name__)
 
 config = configparser.ConfigParser()
-config.read(open(f"{Path(__file__).parent[0]}/dwh.cfg"))
+config.read_file(open(f"{Path(__file__).parents[0]}/dwh.cfg"))
 
 #DROP TABLES
 staging_events_table_drop = "DROP TABLE IF EXISTS staging_events"
@@ -124,19 +130,24 @@ DISTKEY ( start_time )
 SORTKEY (start_time);
 """)
 
+s3=config.get('S3','LOG_DATA')
+role=config.get('IAM_ROLE','REDSHIFT_ARN')
+jsonpath = config.get('S3','LOG_JSONPATH')
+
 staging_events_copy = ("""
 COPY staging_events
-FROM {}
-iam_role {}
-FORMAT AS json {};
-""").format(config['S3']['LOG_DATA'],config['IAM_ROLE']['POLICY_ARN'],config['S3']['LOG_JSONPATH'])
+FROM '{}'
+iam_role '{}'
+FORMAT AS json '{}';
+""").format(s3,role,jsonpath)
 
 staging_songs_copy = ("""
 COPY staging_songs
-FROM {}
-iam_role {}
+FROM '{}'
+iam_role '{}'
 FORMAT AS json 'auto';
-""").format(config['S3']['SONG_DATA'],config['IAM_ROLE']['POLICY_ARN'],config['S3']['LOG_JSONPATH'])
+""").format(s3,role)
+
 
 # load tables
 songplay_table_insert = ("""
@@ -176,7 +187,7 @@ artist_table_insert = ("""
 INSERT INTO artists
 SELECT
     DISTINCT artist_id, artist_name, artist_location, artist_latitude, artist_longitude
-FROM staging_songs;
+FROM staging_songs where artist_id IS NOT NULL;
 """)
 
 time_table_insert = ("""

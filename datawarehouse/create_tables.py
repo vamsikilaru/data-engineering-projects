@@ -13,7 +13,7 @@ def create_tables(cur,conn):
 
 def main():
     cur,conn = dabaseconnection.connectDb()
-    drop_table_queries(cur,conn)
+    drop_tables(cur,conn)
     create_tables(cur,conn)
     cur.close()
     conn.close()
