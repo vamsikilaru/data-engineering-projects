@@ -36,7 +36,8 @@ def process_song_data(spark, input_data, output_data):
     artists_table.write.parquet(output_data+"artists/",mode="overwrite")
 
 def process_log_data(spark,input_data,output_data):
-    log_data = os.path.join(input_data,"log_data/")
+    #log_data = os.path.join(input_data,"log_data/")
+    log_data = input_data + "log_data/*/*/*"
     #read log
     df = spark.read.json(log_data,mode='PERMISSIVE',columnNameOfCorruptRecord='corrupt_record').drop_duplicates()
     df.printSchema()
