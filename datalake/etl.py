@@ -42,7 +42,7 @@ def process_log_data(spark,input_data,output_data):
     df = spark.read.json(log_data,mode='PERMISSIVE',columnNameOfCorruptRecord='corrupt_record').drop_duplicates()
     df.printSchema()
     #filter df by song plays
-    df = df.fliter(df.page== "NextSong")
+    df = df.filter(df.page== "NextSong")
     #user table read
     users_table = df.select("userId","firstName","lastName","gender","level").drop_duplicates()
     #write users
