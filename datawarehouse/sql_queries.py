@@ -82,7 +82,7 @@ user_table_create = ("""
 CREATE TABLE IF NOT EXISTS users
 (
     userId INTEGER PRIMARY KEY,
-    firsname VARCHAR(50),
+    firstname VARCHAR(50),
     lastname VARCHAR(50),
     gender CHAR(1) ENCODE BYTEDICT,
     level VARCHAR ENCODE BYTEDICT

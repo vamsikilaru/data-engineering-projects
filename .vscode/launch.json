@@ -6,8 +6,8 @@
     "configurations": [
         
         {"name":"Python: Current File","type":"python","request":"launch","program":"${workspaceFolder}/datawarehouse/redshiftCluster.py","console":"integratedTerminal","args": [
-         //  "--create", "True",
-         //   "--delete", "False",
+            "--create", "True",
+            "--delete", "False",
             "--create", "False",
             "--delete", "True",
             "--verbosity", "True"
